@@ -4,21 +4,21 @@ import PostContent from "./PostContent";
 import postData from "../postData";
 
 export default function DebatePost() {
-  /* Challenge 
+  /* Challenge
 
-Form çalışmıyor. Göreviniz, kullanıcı "Gönder "e tıkladığında gönderiye bir yorum ekleyen kontrollü bir form yapmaktır.
+  Form çalışmıyor. Göreviniz, kullanıcı "Gönder "e tıkladığında gönderiye bir yorum ekleyen kontrollü bir form yapmaktır.
 
-    1. Yorum, yorum dizisinin alt kısmında, girilen kullanıcı adı ve yorum metni önceki yorumlar gibi görüntülenecek şekilde görünmelidir. 
-       
-    2. Yorum, önceki yorumların verilerini içeren array'e eklenmelidir. 
-    
-    3. Girilen kullanıcı adı kaydedilmeli, ancak kullanıcı onay kutusunu işaretlerse "AnonimKullanıcı" olarak görünmelidir.
-    
-    4. Kullanıcı formu göndermek için text input elemanına ve comment box elemanına metin girmek zorunda olmalı ve kullanıcı bir yorum gönderdikten sonra elemanlar ve onay kutusu temizlenmelidir. Sayfa yüklendiğinde de boş olmalıdırlar.   
-        
-    5. Kodunuz tamamen bu dosyanın içinde yer alabilir, ancak isterseniz bazı kısımları taşıyabilirsiniz. 
+      1. Yorum, yorum dizisinin alt kısmında, girilen kullanıcı adı ve yorum metni önceki yorumlar gibi görüntülenecek şekilde görünmelidir. 
+         
+      2. Yorum, önceki yorumların verilerini içeren array'e eklenmelidir. 
 
-*/
+      3. Girilen kullanıcı adı kaydedilmeli, ancak kullanıcı onay kutusunu işaretlerse "AnonimKullanıcı" olarak görünmelidir.
+
+      4. Kullanıcı formu göndermek için text input elemanına ve comment box elemanına metin girmek zorunda olmalı ve kullanıcı bir yorum gönderdikten sonra elemanlar ve onay kutusu temizlenmelidir. Sayfa yüklendiğinde de boş olmalıdırlar.   
+
+      5. Kodunuz tamamen bu dosyanın içinde yer alabilir, ancak isterseniz bazı kısımları taşıyabilirsiniz. 
+
+  */
   const [comments, setComments] = useState(postData.comments); 
   const [username, setUsername] = useState(""); 
   const [commentText, setCommentText] = useState(""); 
@@ -27,27 +27,32 @@ Form çalışmıyor. Göreviniz, kullanıcı "Gönder "e tıkladığında gönde
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    
     if (!username.trim() && !isAnonymous) {
-      alert("Lütfen bir kullanıcı adı girin.");
+      alert("Lütfen bir kullanıcı adı girin veya anonim olarak gönderin.");
       return;
     }
+
+    
     if (!commentText.trim()) {
       alert("Lütfen bir yorum girin.");
       return;
     }
 
     
+    if (!isAnonymous) {
+      alert("Lütfen anonim olarak göndermek için kutuyu işaretleyin.");
+      return;
+    }
+
     const newComment = {
       id: comments.length + 1,
-      username: isAnonymous ? "AnonimKullanıcı" : username, 
+      username: isAnonymous ? "AnonimKullanıcı" : username,
       text: commentText,
     };
 
-   
     setComments((prevComments) => [...prevComments, newComment]);
 
-   
+    
     setUsername("");
     setCommentText("");
     setIsAnonymous(false);
@@ -59,7 +64,7 @@ Form çalışmıyor. Göreviniz, kullanıcı "Gönder "e tıkladığında gönde
       <PostComments data={comments} />
 
       <form onSubmit={handleFormSubmit}>
-       
+        
         <input
           className="text-input"
           type="text"
